@@ -9,7 +9,7 @@ bun install
 bun run start
 ```
 
-Then scan the QR code with **Expo Go** on your phone. `bun run web` gives a quick browser preview.
+Then scan the QR code with **Expo Go** on your phone (phone and Mac on the same Wi-Fi). If the phone can't connect (hotspot, VPN, campus Wi-Fi), use `bun run start:tunnel` instead. `bun run web` gives a quick browser preview.
 
 ## Checks
 

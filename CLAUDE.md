@@ -21,6 +21,7 @@ Bun is the package manager (`bun.lock`). Use `bunx` rather than `npx`.
 ```bash
 bun install
 bun run start               # expo start (scan QR with Expo Go, or i / a for simulator)
+bun run start:tunnel        # same, via an Expo tunnel — needed when phone and Mac aren't on one LAN
 bun run typecheck           # tsc --noEmit
 bun run lint                # expo lint
 bunx expo-doctor            # dependency/config diagnostics

@@ -17,7 +17,15 @@ export function Screen({ children, scroll = true }: { children: ReactNode; scrol
     paddingBottom: insets.bottom + 24 + NATIVE_TAB_BAR_OFFSET,
   };
   const column = (
-    <View style={{ width: "100%", maxWidth: MAX_CONTENT_WIDTH, alignSelf: "center" }}>
+    <View
+      style={{
+        width: "100%",
+        maxWidth: MAX_CONTENT_WIDTH,
+        alignSelf: "center",
+        // A fixed (non-scrolling) screen lets its content fill the height.
+        flex: scroll ? undefined : 1,
+      }}
+    >
       {children}
     </View>
   );

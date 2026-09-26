@@ -18,7 +18,7 @@ export function profileToFighter(profile: MyProfile, record: string): Fighter {
     gpa: formatGpa(profile.gpa),
     record,
     failed: profile.failed,
-    bio: `"${profile.bio}"`,
+    bio: profile.bio,
     photo: profile.photoUri ? { uri: profile.photoUri } : undefined,
   };
 }

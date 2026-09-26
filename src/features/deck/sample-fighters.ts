@@ -14,7 +14,6 @@ export const SAMPLE_FIGHTERS: Fighter[] = [
     record: "14-3",
     failed: "ORGA",
     bio: '"Just failed ORGA Chemistry. I will not be talking about it. You bring gloves, I bring the footwork."',
-    photo: require("@/assets/images/fighters/jade.jpg"),
   },
   {
     id: "sample-kofi",
@@ -25,7 +24,6 @@ export const SAMPLE_FIGHTERS: Fighter[] = [
     record: "1-2",
     failed: "THERMO",
     bio: '"Entropy is chaos. So am I after an F. Light rounds, heavy heart. Loser buys the dining hall nuggets."',
-    photo: require("@/assets/images/fighters/kofi.jpg"),
   },
   {
     id: "sample-mara",
@@ -36,6 +34,5 @@ export const SAMPLE_FIGHTERS: Fighter[] = [
     record: "4-0",
     failed: "OCHEM",
     bio: '"Gym opens 6am, loser buys protein. Undefeated and extremely well-rested."',
-    photo: require("@/assets/images/fighters/mara.jpg"),
   },
 ];

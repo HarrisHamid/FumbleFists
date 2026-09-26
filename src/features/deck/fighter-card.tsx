@@ -3,6 +3,32 @@ import { Text, View } from "react-native";
 
 import type { Fighter } from "./types";
 
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("");
+}
+
+function PhotoPlaceholder({ name }: { name: string }) {
+  return (
+    <View
+      className="items-center justify-center bg-card-raised"
+      style={{ width: "100%", aspectRatio: 4 / 5 }}
+      accessibilityLabel={`${name}, no photo yet`}
+    >
+      <Text className="font-anton text-[140px] leading-[150px] text-flame/25">
+        {initials(name)}
+      </Text>
+      <Text className="absolute bottom-4 font-mono text-[9px] tracking-[2px] text-cream/40">
+        NO PHOTO YET
+      </Text>
+    </View>
+  );
+}
+
 /**
  * A fighter's deck card. Static for now; Phase 2 wraps it in the
  * gesture-driven swipe layer (SPAR / NOPE stamps, fling, next-card peek).
@@ -11,12 +37,16 @@ export function FighterCard({ fighter }: { fighter: Fighter }) {
   return (
     <View className="rounded-[26px] border border-white/10 bg-card p-5">
       <View className="overflow-hidden rounded-t-[20px]">
-        <Image
-          source={fighter.photo}
-          contentFit="cover"
-          accessibilityLabel={fighter.name}
-          style={{ width: "100%", aspectRatio: 4 / 5 }}
-        />
+        {fighter.photo ? (
+          <Image
+            source={fighter.photo}
+            contentFit="cover"
+            accessibilityLabel={fighter.name}
+            style={{ width: "100%", aspectRatio: 4 / 5 }}
+          />
+        ) : (
+          <PhotoPlaceholder name={fighter.name} />
+        )}
       </View>
 
       <View className="mt-4 flex-row items-end justify-between gap-2">

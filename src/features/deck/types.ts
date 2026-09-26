@@ -10,5 +10,6 @@ export type Fighter = {
   record: string;
   failed: string;
   bio: string;
-  photo: ImageSource | number;
+  /** Absent until the fighter uploads one; the card shows a branded placeholder. */
+  photo?: ImageSource | number;
 };

@@ -102,7 +102,7 @@ Apple and Google scrutinise apps that arrange physical contact. With open sign-u
 
 **Phase 1: Backend + onboarding.** Supabase project, schema migrations, RLS + pgTAP tests, auth (Apple/Google/phone), onboarding (age → waiver → profile → photos → location), generated types.
 
-**Phase 2: Swipe deck.** Port the `spar.tsx` card design (stamps, peeking next card, SPAR/NOPE buttons) to a Reanimated gesture card. Add the `get_deck` RPC, optimistic swipes with image prefetch, and the "MATCH CONFIRMED" modal. Seed data reuses the 4 fighter images in `src/assets/`.
+**Phase 2: Swipe deck.** Port the `spar.tsx` card design (stamps, peeking next card, SPAR/NOPE buttons) to a Reanimated gesture card. Add the `get_deck` RPC, optimistic swipes with image prefetch, and the "MATCH CONFIRMED" modal. Seed data reuses the prototype fighters (`src/features/deck/sample-fighters.ts`); real photos need sourcing — the prototype JPEGs were 1×1 placeholders.
 
 **Phase 3: Matches + chat.** Match list, realtime chat, push notifications, and unmatch/block/report from chat.
 

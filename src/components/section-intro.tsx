@@ -16,7 +16,7 @@ export function SectionIntro({
   return (
     <Animated.View style={entrance.rise}>
       <View>
-        <Text className="font-anton text-4xl leading-[38px] text-paper">
+        <Text className="font-anton text-4xl leading-[44px] text-paper">
           {title} <Text className="text-flame">{accent}</Text>
         </Text>
         <Text className="mt-2 font-body text-[13px] leading-5 text-cream/75">{blurb}</Text>

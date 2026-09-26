@@ -19,7 +19,7 @@ function PhotoPlaceholder({ name }: { name: string }) {
       style={{ width: "100%", aspectRatio: 4 / 5 }}
       accessibilityLabel={`${name}, no photo yet`}
     >
-      <Text className="font-anton text-[140px] leading-[150px] text-flame/25">
+      <Text className="font-anton text-[140px] leading-[168px] text-flame/25">
         {initials(name)}
       </Text>
       <Text className="absolute bottom-4 font-mono text-[9px] tracking-[2px] text-cream/40">
@@ -51,13 +51,13 @@ export function FighterCard({ fighter }: { fighter: Fighter }) {
 
       <View className="mt-4 flex-row items-end justify-between gap-2">
         <View className="flex-1">
-          <Text className="font-anton text-[40px] leading-[36px] text-paper">{fighter.name}</Text>
+          <Text className="font-anton text-[40px] leading-[48px] text-paper">{fighter.name}</Text>
           <Text className="mt-1.5 font-mono text-[10px] tracking-[2px] text-cream/60">
             {fighter.major} · {fighter.year}
           </Text>
         </View>
         <View className="items-end">
-          <Text className="font-anton text-[38px] leading-[36px] text-flame">{fighter.gpa}</Text>
+          <Text className="font-anton text-[38px] leading-[46px] text-flame">{fighter.gpa}</Text>
           <Text className="mt-1 font-mono text-[8px] tracking-[1.6px] text-cream/50">
             GPA · FALLING
           </Text>

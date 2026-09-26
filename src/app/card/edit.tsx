@@ -92,7 +92,7 @@ export default function EditCardScreen() {
           </View>
 
           <Animated.View style={entrance.rise}>
-            <Text className="font-anton text-4xl leading-[38px] text-paper">
+            <Text className="font-anton text-4xl leading-[44px] text-paper">
               WHO ARE WE{"\n"}
               <Text className="text-flame">THROWING IN?</Text>
             </Text>

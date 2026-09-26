@@ -24,7 +24,9 @@ export function Stamp({
     <Animated.View
       style={[entrance.stampIn, { animationDelay: `${delayMs}ms`, alignSelf: "flex-start" }]}
     >
-      <Text className={`rounded border-2 px-3 py-1 font-anton text-lg tracking-[2px] ${border} ${text}`}>
+      <Text
+        className={`rounded border-2 px-3 py-1 font-anton text-lg tracking-[2px] ${border} ${text}`}
+      >
         {label}
       </Text>
     </Animated.View>

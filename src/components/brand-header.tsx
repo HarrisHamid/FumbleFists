@@ -19,7 +19,9 @@ export function BrandHeader({ right }: { right?: ReactNode }) {
         <LogoMark />
         <View>
           <Text className="font-display text-2xl tracking-[2px] text-paper">FUMBLEFISTS</Text>
-          <Text className="font-mono text-[8px] tracking-[2.2px] text-cream/50">SPAR CLUB · EST. FAIL</Text>
+          <Text className="font-mono text-[8px] tracking-[2.2px] text-cream/50">
+            SPAR CLUB · EST. FAIL
+          </Text>
         </View>
       </View>
       {right}

@@ -1,16 +1,9 @@
 import "@/global.css";
 
 import { Anton_400Regular } from "@expo-google-fonts/anton";
-import {
-  Archivo_400Regular,
-  Archivo_500Medium,
-  Archivo_700Bold,
-} from "@expo-google-fonts/archivo";
+import { Archivo_400Regular, Archivo_500Medium, Archivo_700Bold } from "@expo-google-fonts/archivo";
 import { BebasNeue_400Regular } from "@expo-google-fonts/bebas-neue";
-import {
-  JetBrainsMono_400Regular,
-  JetBrainsMono_700Bold,
-} from "@expo-google-fonts/jetbrains-mono";
+import { JetBrainsMono_400Regular, JetBrainsMono_700Bold } from "@expo-google-fonts/jetbrains-mono";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { DarkTheme, Stack, ThemeProvider, type Theme } from "expo-router";
@@ -58,7 +51,9 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={navTheme}>
         <StatusBar style="light" />
-        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.ink } }}>
+        <Stack
+          screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.ink } }}
+        >
           <Stack.Screen name="(tabs)" />
         </Stack>
       </ThemeProvider>

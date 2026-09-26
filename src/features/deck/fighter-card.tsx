@@ -28,7 +28,9 @@ export function FighterCard({ fighter }: { fighter: Fighter }) {
         </View>
         <View className="items-end">
           <Text className="font-anton text-[38px] leading-[36px] text-flame">{fighter.gpa}</Text>
-          <Text className="mt-1 font-mono text-[8px] tracking-[1.6px] text-cream/50">GPA · FALLING</Text>
+          <Text className="mt-1 font-mono text-[8px] tracking-[1.6px] text-cream/50">
+            GPA · FALLING
+          </Text>
         </View>
       </View>
 

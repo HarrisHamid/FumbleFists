@@ -13,13 +13,19 @@ export default function TabLayout() {
     >
       <NativeTabs.Trigger name="index">
         <NativeTabs.Trigger.Label>Spar</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf={{ default: "flame", selected: "flame.fill" }} md="sports_mma" />
+        <NativeTabs.Trigger.Icon
+          sf={{ default: "flame", selected: "flame.fill" }}
+          md="sports_mma"
+        />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="matches">
         <NativeTabs.Trigger.Label>Matches</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          sf={{ default: "bubble.left.and.bubble.right", selected: "bubble.left.and.bubble.right.fill" }}
+          sf={{
+            default: "bubble.left.and.bubble.right",
+            selected: "bubble.left.and.bubble.right.fill",
+          }}
           md="forum"
         />
       </NativeTabs.Trigger>

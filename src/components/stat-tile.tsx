@@ -1,6 +1,11 @@
 import { Text, View } from "react-native";
 
-const valueTone = { paper: "text-paper", match: "text-match", blood: "text-blood", flame: "text-flame" } as const;
+const valueTone = {
+  paper: "text-paper",
+  match: "text-match",
+  blood: "text-blood",
+  flame: "text-flame",
+} as const;
 
 export function StatTile({
   label,

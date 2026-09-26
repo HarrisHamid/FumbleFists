@@ -4,7 +4,15 @@ import Animated from "react-native-reanimated";
 import { entrance } from "@/theme/motion";
 
 /** Big two-tone Anton headline + one-line blurb, used at the top of each tab. */
-export function SectionIntro({ title, accent, blurb }: { title: string; accent: string; blurb: string }) {
+export function SectionIntro({
+  title,
+  accent,
+  blurb,
+}: {
+  title: string;
+  accent: string;
+  blurb: string;
+}) {
   return (
     <Animated.View style={entrance.rise}>
       <View>

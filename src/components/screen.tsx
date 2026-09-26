@@ -16,7 +16,10 @@ export function Screen({ children, scroll = true }: { children: ReactNode; scrol
   }
 
   return (
-    <ScrollView className="flex-1 bg-ink" contentContainerStyle={[padding, { paddingHorizontal: 16 }]}>
+    <ScrollView
+      className="flex-1 bg-ink"
+      contentContainerStyle={[padding, { paddingHorizontal: 16 }]}
+    >
       {children}
     </ScrollView>
   );

@@ -8,7 +8,7 @@ FumbleFists — a just-for-fun, **single-player** Tinder parody: build a fighter
 
 There is **no backend, no accounts, and no App Store release** — all data is local (Zustand + AsyncStorage, planned). Don't add servers, auth, analytics, or store/compliance tooling unless asked.
 
-`legacy-web/` is the original Lovable web prototype (TanStack Start). It is reference only — do not build, lint, or import from it. Delete it once its design/copy has been ported.
+`legacy-web/` is the original web prototype (TanStack Start, exported from Lovable — not connected). It is reference only — do not build, lint, or import from it. Delete it once its design/copy has been ported.
 
 ## Expo has changed — do not trust training data
 
@@ -50,6 +50,6 @@ Run typecheck + lint before calling anything done. There is no test framework; f
 
 Phased plan and local data model are in `docs/architecture.md`.
 
-## Git / Lovable
+## Git
 
-`main` is still connected to Lovable and syncs pushes into its editor. Work happens on feature branches (currently `expo-migration`); commit and push in small verified batches as you go. Don't merge the Expo app into `main` until the repo is disconnected from Lovable. Never rewrite pushed history.
+`main` is the default branch. Work on one branch per roadmap phase (e.g. `phase-1-fighter-card`), commit and push in small verified batches as you go, and fast-forward `main` when the phase is done. Never rewrite pushed history.

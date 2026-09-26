@@ -10,6 +10,7 @@ import { Stamp } from "@/components/stamp";
 import { FighterCard } from "@/features/deck/fighter-card";
 import { useProfileStore } from "@/features/profile/store";
 import { profileToFighter } from "@/features/profile/to-fighter";
+import { burnEverything } from "@/features/reset";
 import { entrance } from "@/theme/motion";
 
 const RESET_ARM_MS = 3000;
@@ -39,7 +40,6 @@ function BurnEverythingButton({ onConfirm }: { onConfirm: () => void }) {
 
 export default function MeScreen() {
   const profile = useProfileStore((s) => s.profile);
-  const clearProfile = useProfileStore((s) => s.clearProfile);
 
   const editCard = () => router.push("/card/edit");
 
@@ -63,9 +63,9 @@ export default function MeScreen() {
       <Animated.View style={[entrance.rise, { animationDelay: "150ms" }]}>
         <View className="mt-6 gap-3">
           <Button label="EDIT MY CARD" onPress={editCard} />
-          <BurnEverythingButton onConfirm={clearProfile} />
+          <BurnEverythingButton onConfirm={burnEverything} />
           <Text className="text-center font-mono text-[9px] leading-4 tracking-[1.2px] text-cream/35">
-            BURNING WIPES YOUR CARD FROM THIS PHONE
+            BURNING WIPES YOUR CARD, MATCHES AND DECK FROM THIS PHONE
           </Text>
         </View>
       </Animated.View>

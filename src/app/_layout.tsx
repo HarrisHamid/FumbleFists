@@ -9,6 +9,7 @@ import { DarkTheme, Stack, ThemeProvider, type Theme } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useProfileStore } from "@/features/profile/store";
 import { useHydrated } from "@/lib/persist";
@@ -54,17 +55,21 @@ export default function RootLayout() {
   if (!ready) return null;
 
   return (
-    <ThemeProvider value={navTheme}>
-      <StatusBar style="light" />
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.ink } }}>
-        <Stack.Protected guard={hasCard}>
-          <Stack.Screen name="(tabs)" />
-        </Stack.Protected>
-        <Stack.Protected guard={!hasCard}>
-          <Stack.Screen name="welcome" options={{ animation: "fade" }} />
-        </Stack.Protected>
-        <Stack.Screen name="card/edit" options={{ presentation: "modal" }} />
-      </Stack>
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider value={navTheme}>
+        <StatusBar style="light" />
+        <Stack
+          screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.ink } }}
+        >
+          <Stack.Protected guard={hasCard}>
+            <Stack.Screen name="(tabs)" />
+          </Stack.Protected>
+          <Stack.Protected guard={!hasCard}>
+            <Stack.Screen name="welcome" options={{ animation: "fade" }} />
+          </Stack.Protected>
+          <Stack.Screen name="card/edit" options={{ presentation: "modal" }} />
+        </Stack>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }

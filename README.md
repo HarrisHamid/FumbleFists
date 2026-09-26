@@ -1,6 +1,6 @@
 # FumbleFists
 
-Failed the exam? Find a sparring partner. A swipe-to-match mobile app for students, built with Expo (iOS + Android).
+Failed the exam? Throw hands (fictionally). A just-for-fun, single-player swipe-to-spar parody built with Expo. All fighters are made up and everything is stored on your phone.
 
 ## Getting started
 
@@ -9,7 +9,7 @@ bun install
 bun run start
 ```
 
-Then scan the QR code with **Expo Go** on your phone, or press `i` for the iOS Simulator (needs full Xcode) / `a` for an Android emulator.
+Then scan the QR code with **Expo Go** on your phone. `bun run web` gives a quick browser preview.
 
 ## Checks
 

@@ -1,121 +1,81 @@
 # FumbleFists — Architecture & Roadmap
 
-## Context
+## What it is
 
-The current repo is a Lovable-generated **web** prototype (TanStack Start + Tailwind + shadcn). It has 4 routes, hardcoded fighters and localStorage persistence. It shows the brand and the swipe concept, but it isn't a mobile app and has no backend. Some of what it displays is fake: the "9-4 record / rage streak 5 / tonight 9PM" values in `src/routes/spar.tsx` are static text. `spar.tsx` never calls `addMatch()`, so `/history` is always empty.
+A just-for-fun, **single-player** Tinder parody for your own phone. You build a fighter card (name, major, GPA, the exam that broke you, a rage bio) and swipe a deck of **fictional** fighters. Some of them swipe back. Matches open a trash-talk chat with a canned-personality bot. You book a bout, settle it in the ring, and the result goes on your W-L record.
 
-The goal is a **real App Store / Play Store launch** of a Tinder-style app: students swipe on each other, a mutual right-swipe creates a match, matched users chat, schedule a spar, and report the result so W-L records are real.
+There's no backend, no accounts, no App Store release and no real users. Everything lives on the device.
 
-Decisions already made:
-- Build a native Expo app and leave Lovable.
-- Replace the web app in this repo.
-- Sign-in uses Apple, Google or phone. No .edu verification.
-- Users pick their own spar location.
-- v1 includes matching + chat, scheduling and fight records.
-- The developer is comfortable with React/TS but new to mobile.
-
-## Recommended stack
+## Stack
 
 | Layer | Choice | Why |
 |---|---|---|
-| Language | **TypeScript (strict)** | You already know it. It's shared between the app and backend types. |
-| App framework | **Expo (latest SDK) + React Native** | One codebase for iOS and Android, no Xcode/Gradle busywork, OTA updates. |
-| Navigation | **Expo Router** | File-based routing, the same mental model as TanStack routes. |
-| Swipe/animation | **react-native-gesture-handler + Reanimated**, `expo-haptics` | Runs at 60/120fps on the UI thread, which is what makes a swipe feel native. |
-| Styling | **NativeWind** (Tailwind for RN) | Port the `ink/paper/cream/flame/match/blood` tokens from `src/styles.css` almost directly. |
-| Fonts | `expo-font` with Anton, Bebas Neue, JetBrains Mono (body font TBD, replacing Inter) | Keeps the existing brand. |
-| Images | `expo-image`, `expo-image-picker` | Caching and fast deck prefetch. |
-| Server state | **TanStack Query** (already a dep) | Caching, optimistic swipes, refetch on focus. |
-| Local state | Zustand + MMKV | Small UI state and persisted prefs. |
-| Forms | react-hook-form + zod (already deps) | Onboarding and profile validation. |
-| Backend | **Supabase**: Postgres + RLS, Auth, Realtime, Storage, Edge Functions | Relational data fits matches/bouts/records. Realtime handles chat, Auth covers Apple/Google/phone OTP, PostGIS handles distance. No servers to run. |
-| Push | `expo-notifications` + Expo Push, sent from a Supabase Edge Function | New match, new message, bout reminders. |
-| Location | `expo-location` + PostGIS | Distance-based deck. Stores a coarse point, never an exact address. |
-| Observability | Sentry (`@sentry/react-native`), PostHog | Crashes and funnel analytics. |
-| Build/ship | **EAS Build / Submit / Update**, GitHub Actions (lint + typecheck + SQL tests) | Store builds without local signing pain. |
-| Testing | Jest + React Native Testing Library, **Maestro** E2E, pgTAP for RLS | Swipe → match → chat flows tested on a simulator. |
+| Language | TypeScript (strict) | |
+| App | **Expo SDK 57** + React Native 0.86 | Run it on your phone through **Expo Go**, with no Xcode or store needed. |
+| Navigation | Expo Router (`src/app/`), NativeTabs | File-based routes, real native tab bar. |
+| Styling | NativeWind v5 + Tailwind v4 | Brand tokens ported from the prototype. |
+| Motion | Reanimated 4 + Gesture Handler, `expo-haptics` | Native-feeling swipe deck and animations. |
+| State + persistence | **Zustand** + `persist` over **AsyncStorage** | Small typed stores that survive app restarts. Both work in Expo Go. |
+| Images | `expo-image`, `expo-image-picker` | Your own card photo, picked from the camera roll and stored locally. |
 
-Alternatives I rejected: Flutter (Dart, full rewrite, no reuse), native Swift + Kotlin (two codebases), and Capacitor-wrapping the web app (weaker gesture feel, and Lovable is being dropped anyway). Firebase is workable, but a document store is a poor fit for relational matches, bouts and records.
+Dropped because they aren't needed here: Supabase/any backend, auth, TanStack Query, EAS store builds, analytics/crash reporting, moderation/legal flows.
 
-## Repo layout (after migration)
+## Layout
 
 ```
 src/
-  app/                          # Expo Router (SDK 57 puts routes under src/)
-    _layout.tsx                 # providers: fonts, QueryClient, nav theme, auth session
-    (auth)/sign-in.tsx
-    (onboarding)/age.tsx, waiver.tsx, profile.tsx, photos.tsx, location.tsx
-    (tabs)/_layout.tsx          # NativeTabs
-    (tabs)/index.tsx            # Spar: swipe deck
-    (tabs)/matches.tsx          # matches + chat list
-    (tabs)/bouts.tsx            # upcoming/past bouts, record
-    (tabs)/me.tsx               # own profile, settings, delete account
-    chat/[matchId].tsx
-    bout/[id].tsx               # propose/confirm/report result
-  components/                   # shared brand UI: Screen, BrandHeader, Stamp, StatTile…
-  features/{deck,matches,chat,bouts,profile,safety}/
-  lib/supabase.ts, query-client.ts, push.ts
-  theme/tokens.ts, motion.ts    # raw brand values + Reanimated keyframes
-  types/database.ts             # generated by `supabase gen types`
-  global.css                    # Tailwind v4 + NativeWind theme tokens
-supabase/
-  migrations/*.sql
-  functions/{send-push, delete-account, moderate-report}/
-  tests/*.sql                   # pgTAP RLS tests
-  seed.sql
-legacy-web/                     # Lovable prototype, reference only; delete once ported
+  app/
+    _layout.tsx              # fonts, splash, nav theme, root Stack
+    (tabs)/_layout.tsx       # NativeTabs: Spar, Matches, Bouts, Me
+    (tabs)/index.tsx         # Spar: swipe deck
+    (tabs)/matches.tsx       # matches list
+    (tabs)/bouts.tsx         # booked bouts, record, ledger
+    (tabs)/me.tsx            # your fighter card (create/edit)
+    chat/[fighterId].tsx     # trash-talk chat with a matched fighter
+    bout/[id].tsx            # the fight itself + result
+  components/                # shared brand UI: Screen, BrandHeader, Stamp, StatTile…
+  features/
+    deck/                    # Fighter type, roster, FighterCard, SwipeDeck
+    profile/                 # your card store + form
+    matches/                 # match store, swipe-back odds
+    chat/                    # personality lines, reply generator
+    bouts/                   # bout store, fight resolution, record/streak selectors
+  theme/                     # tokens.ts, motion.ts
+  global.css                 # Tailwind + NativeWind theme
 ```
 
-## Data model (Supabase / Postgres)
+## Data (all local)
 
-- `profiles`: `id` (= auth.users.id), display_name, birthdate, major, class_year, gpa, failed_exam, bio, experience_level, weight_class, `location geography(point)` (coarse), search_radius_km, waiver_accepted_at, banned_at.
-- `profile_photos`: profile_id, storage_path, position.
-- `swipes`: (swiper_id, target_id) PK, direction `left|right`, created_at.
-- `matches`: id, user_a < user_b, created_at, unmatched_at. **Created by a trigger** when the reverse right-swipe already exists.
-- `messages`: id, match_id, sender_id, body, created_at. Chat is delivered over a Realtime subscription.
-- `bouts`: id, match_id, proposed_by, scheduled_at, location_text, optional location point, status `proposed|confirmed|cancelled|completed`.
-- `bout_results`: bout_id, reporter_id, outcome (winner_id or draw). A result counts **only when both reports agree**. A disagreement is flagged.
-- `fighter_records` view: wins, losses, draws and current streak, derived from agreed results. This replaces the hardcoded stats.
-- `blocks`, `reports` (reporter, target, reason, context, status).
-- RPC `get_deck(limit)`: people within radius, not yet swiped, not blocked, not banned, 18+, optionally filtered by experience/weight.
-- **RLS on every table.** Users read only their own swipes and their matches' messages and bouts. Profiles are readable only when not blocked. All writes go through RLS or security-definer functions.
+One Zustand store per feature, each persisted under its own AsyncStorage key:
 
-## Safety & App Store requirements (non-negotiable for a real launch)
+- **profile**: your `Fighter`-shaped card (+ optional local photo URI).
+- **deck**: the roster order and a cursor, plus a `swipes` map `fighterId → "left" | "right"`.
+- **matches**: `{ fighterId, matchedAt }[]`. A right swipe becomes a match based on a per-fighter "swipe-back" chance (picky fighters are rarer).
+- **chat**: `fighterId → Message[]`. Bot replies are picked from that fighter's personality lines (e.g. Kofi uses thermo puns, Mara brags about being undefeated).
+- **bouts**: `{ id, fighterId, scheduledFor, status: "booked" | "won" | "lost" | "draw" }[]`. Your record, streak and "last fail" are **derived** from this, never hand-entered (the prototype's `9-4` was fake).
 
-Apple and Google scrutinise apps that arrange physical contact. With open sign-up and free-choice venues, these are required to pass review:
-- **18+ gate** (DOB at onboarding) and an age rating of 17+/18+.
-- **Waiver + sparring rules** accepted in onboarding (gloves, headgear, tap-out, stop on request). Position the app as a *sparring partner finder* in store copy. The current "SATIRE" and "throw hands" language comes out of store-facing text.
-- **User-generated content (Guideline 1.2):** report + block on profiles and chat, a text filter on bios and messages, a moderation queue (`reports` + Edge Function alert), and published contact info.
-- **In-app account deletion** (Guideline 5.1.1(v)) via the `delete-account` Edge Function.
-- **Sign in with Apple** is required when Google sign-in is offered.
-- **Free-text venues:** the bout proposal screen nudges users toward public or supervised gyms. Add safety tips and a "share bout details with a friend" link. Never expose precise user location.
-- Remaining risk: a reviewer could still reject under Guideline 1.1 (physical harm). The positioning and safety features above are the mitigation. Adding .edu verification or a curated gym list later would strengthen an appeal.
+A single "Reset everything" in Me clears every store.
 
-## Phased roadmap
+## Roadmap
 
-**Phase 0: Repo transition & scaffold** — ✅ done on `expo-migration` (except the Lovable disconnect, which is manual)
-1. Disconnect the repo from Lovable in the Lovable UI *before* pushing. Otherwise the Lovable editor receives a non-web project.
-2. Move the current web code to `legacy-web/` and exclude it from lint and TS.
-3. Create an Expo app at the root (`create-expo-app` with the TS + Expo Router template). Add NativeWind, Reanimated, Gesture Handler, TanStack Query and fonts.
-4. Port the tokens from `src/styles.css` (`--ink`, `--flame`, etc.) into `src/theme/tokens.ts` + `tailwind.config`. Port the `rise`/`stampin`/`matchpop` keyframes as Reanimated presets.
-5. Build the tab shell with themed placeholder screens. Rewrite `CLAUDE.md` for the new stack. Set up EAS (`eas.json`), ESLint, Prettier and CI.
+**Phase 0: Scaffold** ✅. Expo app, theme, fonts, tab shell, static `FighterCard`.
 
-**Phase 1: Backend + onboarding.** Supabase project, schema migrations, RLS + pgTAP tests, auth (Apple/Google/phone), onboarding (age → waiver → profile → photos → location), generated types.
+**Phase 1: Your fighter card.** Zustand + AsyncStorage setup. A Me screen with a card form (port `legacy-web/src/routes/profile.tsx`), optional photo from the camera roll, and a live preview using `FighterCard`.
 
-**Phase 2: Swipe deck.** Port the `spar.tsx` card design (stamps, peeking next card, SPAR/NOPE buttons) to a Reanimated gesture card. Add the `get_deck` RPC, optimistic swipes with image prefetch, and the "MATCH CONFIRMED" modal. Seed data reuses the prototype fighters (`src/features/deck/sample-fighters.ts`); real photos need sourcing — the prototype JPEGs were 1×1 placeholders.
+**Phase 2: Swipe deck.** Expand the fictional roster (10–15 fighters with bios and personalities). Port the prototype's swipe interaction (`legacy-web/src/routes/spar.tsx`: drag rotation, SPAR/NOPE stamps, fling, next-card peek, NO / SPAR / REPLAY buttons) to Gesture Handler + Reanimated with haptics. Swipe-back odds and a "MATCH CONFIRMED" pop modal.
 
-**Phase 3: Matches + chat.** Match list, realtime chat, push notifications, and unmatch/block/report from chat.
+**Phase 3: Matches + trash-talk chat.** Matches list, and a chat screen with a typing delay and personality-driven replies.
 
-**Phase 4: Bouts + records.** Propose, confirm and cancel bouts. Add reminders, dual-confirmed result reporting, and a `fighter_records`-driven stats row and history screen (replaces the old `/history`).
+**Phase 4: Bouts + record.** Book a bout from chat, then a small fight screen that settles it (simple odds from both records/GPAs, or a quick tap mini-game). Results feed a derived record/streak and the Fight Ledger (replaces the prototype's `/history`).
 
-**Phase 5: Launch hardening.** Moderation workflow, account deletion, Sentry/PostHog, privacy policy + terms, store assets, TestFlight / Play internal beta, then submission.
+**Phase 5: Polish (optional).** Fighter art for the roster (the prototype's photos were 1×1 placeholders), sound effects, a custom app icon/splash, and more fighters.
 
-Prerequisites: Xcode (installed on your Mac), an Apple Developer account ($99/yr), a Google Play developer account ($25), plus Supabase and Expo accounts.
+## Running it
 
-## Verification
+`bun run start` → scan the QR code with **Expo Go** on your phone. If you ever want a standalone install without Expo Go, a local `bunx expo run:ios` (needs Xcode) or an EAS internal build can come later.
 
-- Every phase: `npx tsc --noEmit`, `npx expo lint`, CI green.
-- Phase 0: `npx expo start` → the app opens in the iOS Simulator (and Android emulator) with the themed tab shell and correct fonts.
-- Phase 1+: `supabase start` + `supabase db reset` applies migrations and seed. The pgTAP tests prove RLS (e.g. user A can't read B's messages or swipes).
-- Phase 2–4: Maestro flow with two seeded users: A swipes right on B, B swipes right on A, the match appears, a message arrives in realtime, a bout is proposed and confirmed, both report the same result, and both records update.
-- Before launch: a TestFlight build on a physical device to check swipe feel, push delivery, account deletion and report/block.
+## Verification per phase
+
+- `bun run typecheck`, `bun run lint`, `bunx expo-doctor` stay green.
+- `bunx expo export --platform ios --platform android` bundles cleanly.
+- Click through the flow in the web preview (`bun run web`) and on the phone via Expo Go. Data survives an app restart.

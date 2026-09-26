@@ -50,6 +50,7 @@ export default function RootLayout() {
       <StatusBar style="light" />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.ink } }}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="card/edit" options={{ presentation: "modal" }} />
       </Stack>
     </ThemeProvider>
   );

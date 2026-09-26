@@ -1,0 +1,31 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@import "nativewind/theme";
+
+/*
+ * FumbleFists brand tokens — ported from the Lovable prototype
+ * (legacy-web/src/styles.css). Keep in sync with src/theme/tokens.ts,
+ * which exposes the same values to APIs that need raw colors.
+ */
+@theme {
+  --color-ink: #1b120b;
+  --color-paper: #f2e7ca;
+  --color-cream: #e3d2b0;
+  --color-flame: #f65311;
+  --color-match: #f7cd3a;
+  --color-blood: #c93029;
+  --color-card: #261a11;
+  --color-card-raised: #312317;
+  --color-muted: #baad92;
+
+  /* Family names are the keys passed to useFonts() in src/app/_layout.tsx */
+  --font-display: BebasNeue_400Regular;
+  --font-anton: Anton_400Regular;
+  --font-body: Archivo_400Regular;
+  --font-body-medium: Archivo_500Medium;
+  --font-body-bold: Archivo_700Bold;
+  --font-mono: JetBrainsMono_400Regular;
+  --font-mono-bold: JetBrainsMono_700Bold;
+}

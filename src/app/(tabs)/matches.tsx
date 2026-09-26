@@ -10,12 +10,12 @@ export default function MatchesScreen() {
       <SectionIntro
         title="YOUR"
         accent="CORNER"
-        blurb="Mutual right-swipes land here. Talk terms, set rules, pick a gym."
+        blurb="Fighters who swiped back land here. Talk trash, set terms, book the bout."
       />
       <EmptyState
         round="PHASE 3"
         title="NO MATCHES YET"
-        body="Swipe right on someone who swipes right back and the chat opens here."
+        body="Swipe right. If they swipe back, the trash talk opens here."
       />
     </Screen>
   );

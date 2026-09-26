@@ -24,10 +24,6 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
-# Supabase local
-supabase/.branches
-supabase/.temp
-
 # Logs
 *.log
 npm-debug.*

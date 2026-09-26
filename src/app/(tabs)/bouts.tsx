@@ -13,7 +13,7 @@ export default function BoutsScreen() {
       <SectionIntro
         title="FIGHT"
         accent="LEDGER"
-        blurb="Scheduled spars and results. A result only counts when both fighters confirm it."
+        blurb="Booked bouts and results. Every win, loss and fumble goes on the ledger."
       />
       <View className="mt-6 flex-row gap-2">
         <StatTile label="RECORD" value="0-0" />
@@ -23,7 +23,7 @@ export default function BoutsScreen() {
       <EmptyState
         round="PHASE 4"
         title="NO BOUTS BOOKED"
-        body="Propose a time and place from a match chat. Both of you confirm before it's on."
+        body="Book a bout from a match chat, then step in the ring to settle it."
       />
     </Screen>
   );

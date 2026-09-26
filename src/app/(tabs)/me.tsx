@@ -12,15 +12,15 @@ export default function MeScreen() {
       <SectionIntro
         title="WHO ARE WE"
         accent="THROWING IN?"
-        blurb="Your card is what other fighters swipe on. Make the rage honest."
+        blurb="Your card goes up against the deck. Make the rage honest."
       />
       <EmptyState
         round="PHASE 1"
         title="NO FIGHTER CARD"
-        body="Sign in, confirm you're 18+, accept the sparring rules, then build your card."
+        body="Name, major, GPA, the exam that broke you, and a rage bio. Saved on this phone only."
       />
       <Text className="mt-6 text-center font-mono text-[9px] leading-4 tracking-[1.4px] text-cream/35">
-        CONSENSUAL SPARRING ONLY · GLOVES + HEADGEAR · TAP OUT ANY TIME
+        ALL FIGHTERS ARE FICTIONAL · NO GPAS WERE HARMED
       </Text>
     </Screen>
   );

@@ -5,14 +5,11 @@ import Animated from "react-native-reanimated";
 
 import { BrandHeader } from "@/components/brand-header";
 import { Button } from "@/components/button";
-import { EmptyState } from "@/components/empty-state";
 import { Screen } from "@/components/screen";
-import { SectionIntro } from "@/components/section-intro";
 import { Stamp } from "@/components/stamp";
 import { FighterCard } from "@/features/deck/fighter-card";
 import { useProfileStore } from "@/features/profile/store";
 import { profileToFighter } from "@/features/profile/to-fighter";
-import { useHydrated } from "@/lib/persist";
 import { entrance } from "@/theme/motion";
 
 const RESET_ARM_MS = 3000;
@@ -41,36 +38,14 @@ function BurnEverythingButton({ onConfirm }: { onConfirm: () => void }) {
 }
 
 export default function MeScreen() {
-  const hydrated = useHydrated(useProfileStore);
   const profile = useProfileStore((s) => s.profile);
   const clearProfile = useProfileStore((s) => s.clearProfile);
 
   const editCard = () => router.push("/card/edit");
 
-  if (!hydrated) return <Screen>{null}</Screen>;
-
-  if (!profile) {
-    return (
-      <Screen>
-        <BrandHeader />
-        <SectionIntro
-          title="WHO ARE WE"
-          accent="THROWING IN?"
-          blurb="Your card goes up against the deck. Make the rage honest."
-        />
-        <EmptyState
-          title="NO FIGHTER CARD"
-          body="Name, major, GPA, the exam that broke you, and a rage bio. Saved on this phone only."
-        />
-        <View className="mt-6">
-          <Button label="PRINT MY CARD" onPress={editCard} />
-        </View>
-        <Text className="mt-6 text-center font-mono text-[9px] leading-4 tracking-[1.4px] text-cream/35">
-          ALL FIGHTERS ARE FICTIONAL · NO GPAS WERE HARMED
-        </Text>
-      </Screen>
-    );
-  }
+  // The tabs only exist once a card does (see the root layout); this covers
+  // the moment between burning the card and returning to the landing page.
+  if (!profile) return null;
 
   return (
     <Screen>

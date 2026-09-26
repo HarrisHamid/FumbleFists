@@ -10,6 +10,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 
+import { useProfileStore } from "@/features/profile/store";
+import { useHydrated } from "@/lib/persist";
 import { colors } from "@/theme/tokens";
 
 SplashScreen.preventAutoHideAsync();
@@ -39,17 +41,28 @@ export default function RootLayout() {
     JetBrainsMono_700Bold,
   });
 
-  useEffect(() => {
-    if (fontsLoaded || fontError) SplashScreen.hideAsync();
-  }, [fontsLoaded, fontError]);
+  // First launch (no card yet) shows the landing page; the tabs unlock once a
+  // card exists. Wait for storage so we don't flash the wrong one.
+  const profileLoaded = useHydrated(useProfileStore);
+  const hasCard = useProfileStore((s) => s.profile !== null);
+  const ready = (fontsLoaded || !!fontError) && profileLoaded;
 
-  if (!fontsLoaded && !fontError) return null;
+  useEffect(() => {
+    if (ready) SplashScreen.hideAsync();
+  }, [ready]);
+
+  if (!ready) return null;
 
   return (
     <ThemeProvider value={navTheme}>
       <StatusBar style="light" />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.ink } }}>
-        <Stack.Screen name="(tabs)" />
+        <Stack.Protected guard={hasCard}>
+          <Stack.Screen name="(tabs)" />
+        </Stack.Protected>
+        <Stack.Protected guard={!hasCard}>
+          <Stack.Screen name="welcome" options={{ animation: "fade" }} />
+        </Stack.Protected>
         <Stack.Screen name="card/edit" options={{ presentation: "modal" }} />
       </Stack>
     </ThemeProvider>

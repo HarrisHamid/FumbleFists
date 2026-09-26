@@ -1,7 +1,7 @@
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -28,6 +28,15 @@ export default function EditCardScreen() {
 
   const [draft, setDraft] = useState<ProfileDraft>(() => (saved ? toDraft(saved) : emptyDraft()));
   const [errors, setErrors] = useState<ProfileErrors>({});
+  // Opened from the landing page, before any card existed.
+  const [isFirstCard] = useState(() => saved === null);
+
+  // Saving the first card unlocks the tabs and drops the landing page from
+  // history (see the root layout), so there's nothing to go back to. Move on
+  // once the new card has rendered through, rather than calling back().
+  useEffect(() => {
+    if (isFirstCard && saved) router.replace("/");
+  }, [isFirstCard, saved]);
 
   const set =
     <K extends keyof ProfileDraft>(key: K) =>
@@ -67,7 +76,7 @@ export default function EditCardScreen() {
     }
     saveProfile(result.profile);
     if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    close();
+    if (!isFirstCard) close();
   };
 
   return (

@@ -56,7 +56,7 @@ const ping = css.keyframes({
 const HEADLINE = [
   { text: "FAILED", tone: "text-paper", delayMs: 250 },
   { text: "THE EXAM?", tone: "text-paper", delayMs: 550 },
-  { text: "THROW HANDS.", tone: "text-flame", delayMs: 900 },
+  { text: "THROW SOME HANDS!", tone: "text-flame", delayMs: 900 },
 ] as const;
 
 const TAPE_DELAY_MS = 1200;

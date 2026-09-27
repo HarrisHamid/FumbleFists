@@ -63,6 +63,7 @@ export default function RootLayout() {
         >
           <Stack.Protected guard={hasCard}>
             <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="chat/[fighterId]" />
           </Stack.Protected>
           <Stack.Protected guard={!hasCard}>
             <Stack.Screen name="welcome" options={{ animation: "fade" }} />

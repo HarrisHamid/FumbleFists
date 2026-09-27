@@ -66,7 +66,7 @@ A single "Reset everything" in Me clears every store.
 
 **Phase 3: Matches + trash-talk chat** ✅. Matches list, and a chat screen with a typing delay and personality-driven replies.
 
-**Phase 4: Bouts + record.** Book a bout from chat, then a small fight screen that settles it (simple odds from both records/GPAs, or a quick tap mini-game). Results feed a derived record/streak and the Fight Ledger (replaces the prototype's `/history`).
+**Phase 4: Bouts + record** ✅. Book a time and place from chat, then fight a timing mini-game (difficulty from the opponent's record) that ends by KO, decision or tap out. Results feed a derived record/streak, the Fight Ledger and a reaction in chat.
 
 **Phase 5: Polish (optional).** Fighter art for the roster (the prototype's photos were 1×1 placeholders), sound effects, a custom app icon/splash, and more fighters.
 

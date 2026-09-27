@@ -21,8 +21,12 @@ function titleCase(word: string) {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
-function fillSlots(line: string, me: MyProfile | null) {
-  return line
+export function fillSlots(line: string, me: MyProfile | null, extra: Record<string, string> = {}) {
+  const withExtras = Object.entries(extra).reduce(
+    (text, [slot, value]) => text.replaceAll(`{${slot}}`, value),
+    line,
+  );
+  return withExtras
     .replaceAll("{me}", me ? titleCase(me.name.split(" ")[0] ?? "") : "champ")
     .replaceAll("{major}", me?.major ?? "undeclared")
     .replaceAll("{gpa}", me ? formatGpa(me.gpa) : "2.0")
@@ -68,18 +72,13 @@ export function openThread(fighterId: string, me: MyProfile | null) {
 }
 
 /**
- * Send your message, then have the fighter "type" and reply. Rapid-fire
- * messages get one reply to the latest, like a real person catching up.
+ * Have the fighter "type" for a moment, then send `reply`. A newer scheduled
+ * reply replaces an older one, like a person catching up on rapid-fire texts.
  */
-export function sendMessage(fighterId: string, text: string, me: MyProfile | null) {
-  const trimmed = text.trim();
-  if (!trimmed) return;
-  const { append, setTyping } = useChatStore.getState();
-  append(fighterId, "me", trimmed);
-
+export function scheduleReply(fighterId: string, reply: string) {
+  const { setTyping } = useChatStore.getState();
   clearPending(fighterId);
   setTyping(fighterId, false);
-  const reply = pickReply(fighterId, trimmed, me);
   const typingDelay = 500 + Math.random() * 500;
   const replyDelay = typingDelay + Math.min(2600, 700 + reply.length * 28);
 
@@ -92,4 +91,12 @@ export function sendMessage(fighterId: string, text: string, me: MyProfile | nul
       pending.delete(fighterId);
     }, replyDelay),
   ]);
+}
+
+/** Send your message and get a reply in the fighter's voice. */
+export function sendMessage(fighterId: string, text: string, me: MyProfile | null) {
+  const trimmed = text.trim();
+  if (!trimmed) return;
+  useChatStore.getState().append(fighterId, "me", trimmed);
+  scheduleReply(fighterId, pickReply(fighterId, trimmed, me));
 }

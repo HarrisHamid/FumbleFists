@@ -1,3 +1,4 @@
+import { useBoutsStore } from "@/features/bouts/store";
 import { cancelAllReplies } from "@/features/chat/bot";
 import { useChatStore } from "@/features/chat/store";
 import { useDeckStore } from "@/features/deck/store";
@@ -8,6 +9,7 @@ import { useProfileStore } from "@/features/profile/store";
 export function burnEverything() {
   cancelAllReplies();
   useChatStore.getState().reset();
+  useBoutsStore.getState().reset();
   useDeckStore.getState().reset();
   useMatchesStore.getState().reset();
   // Last: clearing the card sends you back to the landing page.

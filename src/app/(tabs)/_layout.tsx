@@ -1,8 +1,13 @@
 import { NativeTabs } from "expo-router/unstable-native-tabs";
 
+import { unreadCount, useChatStore } from "@/features/chat/store";
 import { colors } from "@/theme/tokens";
 
 export default function TabLayout() {
+  const unread = useChatStore((s) =>
+    Object.values(s.threads).reduce((sum, thread) => sum + unreadCount(thread), 0),
+  );
+
   return (
     <NativeTabs
       backgroundColor={colors.ink}
@@ -21,6 +26,7 @@ export default function TabLayout() {
 
       <NativeTabs.Trigger name="matches">
         <NativeTabs.Trigger.Label>Matches</NativeTabs.Trigger.Label>
+        {unread > 0 ? <NativeTabs.Trigger.Badge>{String(unread)}</NativeTabs.Trigger.Badge> : null}
         <NativeTabs.Trigger.Icon
           sf={{
             default: "bubble.left.and.bubble.right",

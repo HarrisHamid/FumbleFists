@@ -196,7 +196,7 @@ export default function SparScreen() {
           onKeepSwiping={() => setMatchedWith(null)}
           onTalkTrash={() => {
             setMatchedWith(null);
-            router.push("/matches");
+            router.push({ pathname: "/chat/[fighterId]", params: { fighterId: matchedWith.id } });
           }}
         />
       ) : null}

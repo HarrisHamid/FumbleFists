@@ -64,6 +64,12 @@ export default function RootLayout() {
           <Stack.Protected guard={hasCard}>
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="chat/[fighterId]" />
+            <Stack.Screen name="bout/book" options={{ presentation: "modal" }} />
+            {/* No swipe-back mid-fight: leaving goes through TAP OUT. */}
+            <Stack.Screen
+              name="bout/[id]"
+              options={{ gestureEnabled: false, animation: "fade_from_bottom" }}
+            />
           </Stack.Protected>
           <Stack.Protected guard={!hasCard}>
             <Stack.Screen name="welcome" options={{ animation: "fade" }} />

@@ -12,13 +12,14 @@ import {
 import Animated, { css } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { activeBoutWith, useBoutsStore } from "@/features/bouts/store";
 import { openThread, sendMessage } from "@/features/chat/bot";
 import { type Message, useChatStore } from "@/features/chat/store";
 import { initials } from "@/features/deck/fighter-card";
 import { ROSTER_BY_ID } from "@/features/deck/roster";
 import { useProfileStore } from "@/features/profile/store";
 import { haptics } from "@/lib/haptics";
-import { springOut } from "@/theme/motion";
+import { entrance, springOut } from "@/theme/motion";
 import { colors } from "@/theme/tokens";
 
 const QUICK_JABS = [
@@ -108,6 +109,8 @@ export default function ChatScreen() {
   const messages = useChatStore((s) => s.threads[fighterId ?? ""]?.messages);
   const typing = useChatStore((s) => !!s.typing[fighterId ?? ""]);
   const markRead = useChatStore((s) => s.markRead);
+  const bouts = useBoutsStore((s) => s.bouts);
+  const booked = activeBoutWith(bouts, fighterId ?? "");
 
   const [draft, setDraft] = useState("");
   const [openedAt] = useState(() => Date.now());
@@ -178,7 +181,51 @@ export default function ChatScreen() {
               : `${fighter.record} · FAILED ${fighter.failed} · GPA ${fighter.gpa}`}
           </Text>
         </View>
+        {booked ? null : (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Book a bout with ${fighter.name}`}
+            onPress={() => {
+              haptics.tick();
+              router.push({ pathname: "/bout/book", params: { fighterId: fighter.id } });
+            }}
+            className="rounded-md bg-flame px-3 py-1.5"
+            style={({ pressed }) => ({
+              transform: [{ rotate: "-2deg" }, { scale: pressed ? 0.94 : 1 }],
+              boxShadow: pressed ? undefined : "3px 3px 0 #000",
+            })}
+          >
+            <Text className="font-anton text-base leading-6 tracking-[1px] text-ink">BOOK</Text>
+          </Pressable>
+        )}
       </View>
+
+      {booked ? (
+        <Animated.View style={entrance.rise}>
+          <View className="flex-row items-center gap-3 border-b border-flame/30 bg-flame/10 px-4 py-2.5">
+            <View className="flex-1">
+              <Text className="font-mono text-[9px] tracking-[1.8px] text-flame">BOUT BOOKED</Text>
+              <Text numberOfLines={1} className="mt-0.5 font-anton text-base leading-6 text-paper">
+                {booked.when} · {booked.where}
+              </Text>
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Step into the ring"
+              onPress={() => {
+                haptics.thud();
+                router.push({ pathname: "/bout/[id]", params: { id: booked.id } });
+              }}
+              className="rounded-md border-2 border-flame px-3 py-1.5"
+              style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}
+            >
+              <Text className="font-anton text-base leading-6 tracking-[1px] text-flame">
+                STEP IN
+              </Text>
+            </Pressable>
+          </View>
+        </Animated.View>
+      ) : null}
 
       <ScrollView
         ref={scroller}

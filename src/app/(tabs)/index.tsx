@@ -7,6 +7,7 @@ import { BrandHeader } from "@/components/brand-header";
 import { Button } from "@/components/button";
 import { EmptyState } from "@/components/empty-state";
 import { Screen } from "@/components/screen";
+import { recordOf, useBoutsStore } from "@/features/bouts/store";
 import { runItBack, swipeFighter } from "@/features/deck/actions";
 import { MatchOverlay } from "@/features/deck/match-overlay";
 import { ROSTER, ROSTER_BY_ID } from "@/features/deck/roster";
@@ -80,6 +81,7 @@ export default function SparScreen() {
   const lastSwipe = useDeckStore((s) => s.lastSwipe);
   const rewind = useDeckStore((s) => s.rewind);
   const matchCount = useMatchesStore((s) => s.matches.length);
+  const record = useBoutsStore((s) => recordOf(s.bouts));
 
   const [matchedWith, setMatchedWith] = useState<RosterFighter | null>(null);
   const [enterFrom, setEnterFrom] = useState<SwipeDirection | undefined>();
@@ -191,7 +193,7 @@ export default function SparScreen() {
 
       {matchedWith ? (
         <MatchOverlay
-          you={profileToFighter(profile, "0-0")}
+          you={profileToFighter(profile, record)}
           them={matchedWith}
           onKeepSwiping={() => setMatchedWith(null)}
           onTalkTrash={() => {

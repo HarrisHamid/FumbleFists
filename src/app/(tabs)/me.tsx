@@ -7,6 +7,7 @@ import { BrandHeader } from "@/components/brand-header";
 import { Button } from "@/components/button";
 import { Screen } from "@/components/screen";
 import { Stamp } from "@/components/stamp";
+import { recordOf, useBoutsStore } from "@/features/bouts/store";
 import { FighterCard } from "@/features/deck/fighter-card";
 import { useProfileStore } from "@/features/profile/store";
 import { profileToFighter } from "@/features/profile/to-fighter";
@@ -40,6 +41,7 @@ function BurnEverythingButton({ onConfirm }: { onConfirm: () => void }) {
 
 export default function MeScreen() {
   const profile = useProfileStore((s) => s.profile);
+  const record = useBoutsStore((s) => recordOf(s.bouts));
 
   const editCard = () => router.push("/card/edit");
 
@@ -52,8 +54,7 @@ export default function MeScreen() {
       <BrandHeader />
       <Animated.View style={entrance.rise}>
         <View>
-          {/* Record is derived from bouts once Phase 4 lands. */}
-          <FighterCard fighter={profileToFighter(profile, "0-0")} />
+          <FighterCard fighter={profileToFighter(profile, record)} />
           <View className="absolute right-6 top-8">
             <Stamp label="YOUR CARD" color="match" delayMs={500} />
           </View>

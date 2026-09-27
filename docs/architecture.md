@@ -64,7 +64,7 @@ A single "Reset everything" in Me clears every store.
 
 **Phase 2: Swipe deck** ✅. Expand the fictional roster (10–15 fighters with bios and personalities). Port the prototype's swipe interaction (`legacy-web/src/routes/spar.tsx`: drag rotation, SPAR/NOPE stamps, fling, next-card peek, NO / SPAR / REPLAY buttons) to Gesture Handler + Reanimated with haptics. Swipe-back odds and a "MATCH CONFIRMED" pop modal.
 
-**Phase 3: Matches + trash-talk chat.** Matches list, and a chat screen with a typing delay and personality-driven replies.
+**Phase 3: Matches + trash-talk chat** ✅. Matches list, and a chat screen with a typing delay and personality-driven replies.
 
 **Phase 4: Bouts + record.** Book a bout from chat, then a small fight screen that settles it (simple odds from both records/GPAs, or a quick tap mini-game). Results feed a derived record/streak and the Fight Ledger (replaces the prototype's `/history`).
 

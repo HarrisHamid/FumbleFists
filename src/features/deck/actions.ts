@@ -1,4 +1,6 @@
+import { openThread } from "@/features/chat/bot";
 import { useMatchesStore } from "@/features/matches/store";
+import { useProfileStore } from "@/features/profile/store";
 
 import { useDeckStore } from "./store";
 import { ROSTER } from "./roster";
@@ -12,6 +14,8 @@ export function swipeFighter(fighter: RosterFighter, direction: SwipeDirection):
   useDeckStore.getState().recordSwipe(fighter.id, direction);
   if (direction !== "right" || Math.random() >= fighter.swipeBackChance) return false;
   useMatchesStore.getState().addMatch(fighter.id);
+  // They open with a line, so the chat's waiting when you get there.
+  openThread(fighter.id, useProfileStore.getState().profile);
   return true;
 }
 
